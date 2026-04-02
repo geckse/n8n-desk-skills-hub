@@ -1,0 +1,12 @@
+.DS_Store
+*/.DS_Store
+node_modules/
+dist/
+.env
+.env.*
+*.js.map
+*.tsbuildinfo
+/references
+SDK-Reference.md
+SKILL_GUIDELINES.md
+/knowledge
