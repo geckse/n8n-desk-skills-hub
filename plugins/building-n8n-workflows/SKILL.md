@@ -22,6 +22,10 @@ import {
 } from '@n8n/workflow-sdk';
 ```
 
+## Tool Name Convention
+
+This skill uses **bare tool names** (e.g., `search_nodes`). In Claude Code with the n8n MCP server, prefix with the server name: `claude.ai n8n beta:search_nodes`. In n8n-desk, use the bare name directly.
+
 ## Workflow Building Process
 
 Follow these steps in order. Do not skip steps.
@@ -32,17 +36,17 @@ Call the MCP resource `n8n://workflow-sdk/reference` or read [PATTERNS.md](PATTE
 
 ### Step 2: Discover nodes
 
-Call `claude.ai n8n beta:search_nodes` with queries for services needed (e.g., `["gmail", "slack", "schedule trigger"]`) and utility nodes (e.g., `["set", "if", "merge", "code"]`). Note the **discriminators** (resource/operation/mode) in the results.
+Call **search_nodes** with queries for services needed (e.g., `["gmail", "slack", "schedule trigger"]`) and utility nodes (e.g., `["set", "if", "merge", "code"]`). Note the **discriminators** (resource/operation/mode) in the results.
 
 Before searching, check [SUGGESTED-NODES.md](SUGGESTED-NODES.md) for the right category to understand which nodes and patterns fit your use case.
 
 ### Step 3: (Optional) Get suggestions
 
-Call `claude.ai n8n beta:get_suggested_nodes` with workflow technique categories for curated recommendations.
+Call **get_suggested_nodes** with workflow technique categories for curated recommendations.
 
 ### Step 4: Get type definitions
 
-Call `claude.ai n8n beta:get_node_types` with ALL node IDs you plan to use, including discriminators from search results. This returns exact TypeScript parameter definitions.
+Call **get_node_types** with ALL node IDs you plan to use, including discriminators from search results. This returns exact TypeScript parameter definitions.
 
 **DO NOT SKIP THIS.** Guessing parameter names creates invalid workflows.
 
@@ -52,23 +56,23 @@ Use the SDK patterns from [PATTERNS.md](PATTERNS.md) and exact parameter names f
 
 ### Step 6: Validate (feedback loop)
 
-Call `claude.ai n8n beta:validate_workflow` with your full code.
+Call **validate_workflow** with your full code.
 
 **If validation fails:** Fix errors and re-validate. Repeat until valid. Do not proceed with invalid code.
 
 ### Step 7: Create
 
-Call `claude.ai n8n beta:create_workflow_from_code` with validated code. Include a short `description` (1-2 sentences) summarizing what the workflow does.
+Call **create_workflow_from_code** with validated code. Include a short `description` (1-2 sentences) summarizing what the workflow does.
 
 ### Step 8: Update (existing workflows)
 
-Call `claude.ai n8n beta:update_workflow` with workflow ID and validated code. Always re-run steps 2-6 for the new code.
+Call **update_workflow** with workflow ID and validated code. Always re-run steps 2-6 for the new code.
 
 ### Step 9: Lifecycle management
 
-- `claude.ai n8n beta:archive_workflow` — archive by ID
-- `claude.ai n8n beta:publish_workflow` — activate
-- `claude.ai n8n beta:unpublish_workflow` — deactivate
+- **archive_workflow** — archive by ID
+- **publish_workflow** — activate
+- **unpublish_workflow** — deactivate
 
 ---
 
@@ -223,19 +227,21 @@ expr('{{ { "fields": [{ "values": $("Fetch Projects").all().map(i => ({ option: 
 
 | Tool | Description |
 |---|---|
-| `claude.ai n8n beta:search_nodes` | Search nodes by service name, trigger type, or utility |
-| `claude.ai n8n beta:get_node_types` | Get TypeScript type definitions for nodes |
-| `claude.ai n8n beta:get_suggested_nodes` | Get curated node recommendations by category |
-| `claude.ai n8n beta:validate_workflow` | Validate workflow code before creating |
-| `claude.ai n8n beta:create_workflow_from_code` | Save validated workflow to n8n |
-| `claude.ai n8n beta:update_workflow` | Update existing workflow with new code |
-| `claude.ai n8n beta:get_workflow_details` | Get workflow details by ID |
-| `claude.ai n8n beta:search_workflows` | Search workflows in the instance |
-| `claude.ai n8n beta:execute_workflow` | Execute a workflow |
-| `claude.ai n8n beta:get_execution` | Get execution details |
-| `claude.ai n8n beta:archive_workflow` | Archive a workflow |
-| `claude.ai n8n beta:publish_workflow` | Activate a workflow |
-| `claude.ai n8n beta:unpublish_workflow` | Deactivate a workflow |
+| `search_nodes` | Search nodes by service name, trigger type, or utility |
+| `get_node_types` | Get TypeScript type definitions for nodes |
+| `get_suggested_nodes` | Get curated node recommendations by category |
+| `validate_workflow` | Validate workflow code before creating |
+| `create_workflow_from_code` | Save validated workflow to n8n |
+| `update_workflow` | Update existing workflow with new code |
+| `get_workflow_details` | Get workflow details by ID |
+| `search_workflows` | Search workflows in the instance |
+| `execute_workflow` | Execute a workflow |
+| `get_execution` | Get execution details |
+| `archive_workflow` | Archive a workflow |
+| `publish_workflow` | Activate a workflow |
+| `unpublish_workflow` | Deactivate a workflow |
+
+> **Claude Code users:** Prefix tool names with the MCP server name, e.g., `claude.ai n8n beta:search_nodes`.
 
 ---
 
